@@ -15,9 +15,9 @@ jobs:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_USER: ${{ secrets.DEFAULT_DATABASE_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DEFAULT_DATABASE_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DEFAULT_DATABASE_NAME }}
+          POSTGRES_USER: youbike_user
+          POSTGRES_PASSWORD: L8C7i1RdoTUoFk0fL6JP1VPoRa9SG1AR
+          POSTGRES_DB: youbike
         ports:
           - 5432:5432
         options: >-
@@ -44,11 +44,11 @@ jobs:
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
           echo "DEBUG=${{ secrets.DEBUG }}" >> .env
-          echo "DATABASE_URL=${{ secrets.DEFAULT_DATABASE_URL }}" >> .env
+          echo "DATABASE_URL=postgresql://youbike_user:L8C7i1RdoTUoFk0fL6JP1VPoRa9SG1AR@dpg-csmnnlggph6c73fn4ecg-a.singapore-postgres.render.com/youbike" >> .env
 
       - name: Wait for PostgreSQL
         run: |
-          until pg_isready -h localhost -p 5432 -U ${{ secrets.DEFAULT_DATABASE_USER }}; do
+          until pg_isready -h localhost -p 5432 -U youbike_user; do
             echo "Waiting for PostgreSQL to be ready..."
             sleep 3
           done
