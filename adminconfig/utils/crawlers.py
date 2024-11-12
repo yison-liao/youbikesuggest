@@ -3,9 +3,9 @@ import LocalDriver
 LocalDriver.LocalDriver()
 
 import json
+import time as pytime
 import uuid
 from datetime import datetime
-from time import time
 
 import pytz
 import requests
@@ -181,7 +181,7 @@ def station_status_crawler(url: str):
     go = None
     for i in range(10):
         if i != 0:
-            time.sleep(1)
+            pytime.sleep(1)
         print(f"第{i+1}次連線{url}")
         go = session.get(url)
         if go.status_code == 200:
