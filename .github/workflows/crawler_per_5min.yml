@@ -15,13 +15,13 @@ jobs:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_USER: "youbike_user"
-          POSTGRES_PASSWORD: "L8C7i1RdoTUoFk0fL6JP1VPoRa9SG1AR"
-          POSTGRES_DB: "youbike"
+          POSTGRES_USER: ${{ secrets.DEFAULT_DATABASE_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DEFAULT_DATABASE_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DEFAULT_DATABASE_NAME }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U postgres"
+          --health-cmd="pg_isready -U ${{ secrets.DEFAULT_DATABASE_USER }}"
           --health-interval=5s
           --health-timeout=2s
           --health-retries=5
@@ -84,11 +84,11 @@ jobs:
           fi
       - name: Set up Django settings for PostgreSQL
         run: |
-          echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/${{ secrets.DEFAULT_DATABASE_NAME }}" >> $GITHUB_ENV
+          echo "DATABASE_URL=${{ secrets.DEFAULT_DATABASE_URL }}" >> $GITHUB_ENV
 
       - name: Wait for PostgreSQL
         run: |
-          until pg_isready -h localhost -p 5432 -U postgres; do
+          until pg_isready -h localhost -p 5432 -U ${{ secrets.DEFAULT_DATABASE_USER }}; do
             echo "Waiting for PostgreSQL to be ready..."
             sleep 3
           done
