@@ -177,32 +177,36 @@ def get_list():
 
 def station_status_crawler(url: str):
     session = requests.Session()
-    go = session.get(url)
-    if go.status_code == 200:
-        print(f"connecting {url} start")
-        data = json.loads(go.text)
-        station_uuid = None
-        for station in data:
-            time = datetime.strptime(station["time"], "%Y-%m-%d %H:%M:%S")
-            time = pytz.timezone(settings.TIME_ZONE).localize(time)
-            station["time"] = time
-            if station["station_no"] not in STATIONS.keys():
-                area = AreaInfo.objects.get(area_code=station["area_code"])
-                district = DistrictInfo.objects.get(district_tw=station["district_tw"])
-                station_uuid = create_station_info(station, area._id, district._id)._id
-                get_list()
-
-        if station_uuid is None:
-            station_uuid = STATIONS[station["station_no"]]
-        await_created = [
-            create_station_status_info(station, station_uuid, bulk_create=True)
-            for station in data
-        ]
-        with transaction.atomic():
-            YoubikeStationsStatus.objects.bulk_create(await_created, batch_size=1000)
-        print("completed")
+    go = None
+    for _ in range(10):
+        go = session.get(url)
+        if go.status_code == 200:
+            break
     else:
         raise Exception("connecting fail")
+
+    print(f"connecting {url} start")
+    data = json.loads(go.text)
+    station_uuid = None
+    for station in data:
+        time = datetime.strptime(station["time"], "%Y-%m-%d %H:%M:%S")
+        time = pytz.timezone(settings.TIME_ZONE).localize(time)
+        station["time"] = time
+        if station["station_no"] not in STATIONS.keys():
+            area = AreaInfo.objects.get(area_code=station["area_code"])
+            district = DistrictInfo.objects.get(district_tw=station["district_tw"])
+            station_uuid = create_station_info(station, area._id, district._id)._id
+            get_list()
+
+    if station_uuid is None:
+        station_uuid = STATIONS[station["station_no"]]
+    await_created = [
+        create_station_status_info(station, station_uuid, bulk_create=True)
+        for station in data
+    ]
+    with transaction.atomic():
+        YoubikeStationsStatus.objects.bulk_create(await_created, batch_size=1000)
+    print("completed")
 
 
 if __name__ == "__main__":
