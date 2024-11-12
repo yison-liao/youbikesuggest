@@ -184,6 +184,15 @@ def station_status_crawler(url: str):
             time = datetime.strptime(station["time"], "%Y-%m-%d %H:%M:%S")
             time = pytz.timezone(settings.TIME_ZONE).localize(time)
             station["time"] = time
+            if station["station_no"] not in STATIONS.keys():
+                area = AreaInfo.objects.get(area_code=station["area_code"])
+                district = DistrictInfo.objects.get(district_tw=station["district_tw"])
+                create_station_info(station, area._id, district._id)
+                get_list()
+                with open(
+                    "adminconfig/utils/Stations.json", mode="r", encoding="utf8"
+                ) as file:
+                    STATIONS = json.loads(file.read())
 
         await_created = [
             create_station_status_info(
