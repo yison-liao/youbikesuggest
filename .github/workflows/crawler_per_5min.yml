@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "*/5 * * * *" # 每五分鐘執行一次
+    - cron: "*/5 * * * *"
 
 jobs:
   postgres-and-crawler:
