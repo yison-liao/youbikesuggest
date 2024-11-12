@@ -13,9 +13,8 @@ gunicorn==23.0.0; python_version >= '3.7'
 h11==0.14.0; python_version >= '3.7'
 httptools==0.6.4
 idna==3.10; python_version >= '3.6'
-packaging==24.1; python_version >= '3.8'
-psycopg[binary]==3.2.3; python_version >= '3.8'
-psycopg-binary==3.2.3
+packaging==24.2; python_version >= '3.8'
+psycopg2-binary==2.9.10; python_version >= '3.8'
 pyjwt==2.9.0; python_version >= '3.8'
 python-dotenv==1.0.1; python_version >= '3.8'
 pytz==2024.1
@@ -28,4 +27,4 @@ urllib3==2.2.3; python_version >= '3.8'
 uvicorn[standard]==0.30.6; python_version >= '3.8'
 uvloop==0.21.0
 watchfiles==0.24.0
-websockets==13.1
+websockets==14.0

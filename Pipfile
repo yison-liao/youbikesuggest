@@ -15,8 +15,8 @@ pytz = "==2024.1"
 asgiref = "==3.8.*"
 dj-database-url = "*"
 django-multiselectfield = "*"
-psycopg = {extras = ["binary"], version = "*"}
 requests = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
