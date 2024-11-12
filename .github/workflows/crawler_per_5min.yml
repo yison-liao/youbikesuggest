@@ -11,17 +11,23 @@ jobs:
   postgres-and-crawler:
     runs-on: ubuntu-latest
 
+    env:
+      POSTGRES_USER: ${{ secrets.DEFAULT_DATABASE_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.DEFAULT_DATABASE_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.DEFAULT_DATABASE_NAME }}
+      DATABASE_URL: "postgres://${{ secrets.DEFAULT_DATABASE_USER }}:${{ secrets.DEFAULT_DATABASE_PASSWORD }}@localhost:5432/${{ secrets.DEFAULT_DATABASE_NAME }}"
+
     services:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_USER: ${{ secrets.DEFAULT_DATABASE_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DEFAULT_DATABASE_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DEFAULT_DATABASE_NAME }}
+          POSTGRES_USER: ${{ env.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ env.POSTGRES_DB }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U ${{ secrets.DEFAULT_DATABASE_USER }}"
+          --health-cmd="pg_isready -U ${{ env.POSTGRES_USER }}"
           --health-interval=5s
           --health-timeout=2s
           --health-retries=5
@@ -44,23 +50,19 @@ jobs:
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
           echo "DEBUG=${{ secrets.DEBUG }}" >> .env
-          echo "DATABASE_URL=postgres://${{ secrets.DEFAULT_DATABASE_USER }}:${{ secrets.DEFAULT_DATABASE_PASSWORD }}@localhost:5432/${{ secrets.DEFAULT_DATABASE_NAME }}" >> .env
+          echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> .env
 
       - name: Wait for PostgreSQL
         run: |
-          until pg_isready -h localhost -p 5432 -U ${{ secrets.DEFAULT_DATABASE_USER }}; do
+          until pg_isready -h localhost -p 5432 -U ${{ env.POSTGRES_USER }}; do
             echo "Waiting for PostgreSQL to be ready..."
             sleep 3
           done
 
       - name: Run database migrations
-        env:
-          DATABASE_URL: ${{ secrets.DEFAULT_DATABASE_URL }}
         run: |
           python manage.py migrate
 
       - name: Run crawler script
-        env:
-          DATABASE_URL: ${{ secrets.DEFAULT_DATABASE_URL }}
         run: |
           python adminconfig/utils/crawlers.py
