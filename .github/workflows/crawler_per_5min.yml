@@ -44,4 +44,4 @@ jobs:
 
       - name: Run crawler script
         run: |
-          python adminconfig/utils/crawler.py
+          python adminconfig/utils/crawlers.py
