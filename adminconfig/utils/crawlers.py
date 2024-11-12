@@ -178,7 +178,8 @@ def get_list():
 def station_status_crawler(url: str):
     session = requests.Session()
     go = None
-    for _ in range(10):
+    for i in range(10):
+        print(f"第{i+1}次連線{url}")
         go = session.get(url)
         if go.status_code == 200:
             break
