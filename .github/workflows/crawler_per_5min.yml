@@ -45,7 +45,7 @@ jobs:
         run: |
           echo "Testing URL access..."
           curl -v https://apis.youbike.com.tw/json/station-yb1.json  # 替换为你要测试的 URL
-          # 检查连接是否正常
+
           if [ $? -ne 0 ]; then
             echo "Failed to connect to the URL!"
             exit 1
@@ -55,7 +55,7 @@ jobs:
 
           echo "Testing URL access..."
           curl -v https://apis.youbike.com.tw/json/station-yb1.json  # 替换为你要测试的 URL
-          # 检查连接是否正常
+
           if [ $? -ne 0 ]; then
             echo "Failed to connect to the URL!"
             exit 1
