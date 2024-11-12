@@ -207,4 +207,5 @@ def station_status_crawler(url: str):
 
 if __name__ == "__main__":
     for idx in range(1, 3):
+        # go
         station_status_crawler(API_URL + SOURCE[idx])
