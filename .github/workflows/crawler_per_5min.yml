@@ -41,6 +41,27 @@ jobs:
           DEFAULT_DATABASE_PORT: ${{ secrets.DEFAULT_DATABASE_PORT }}
           DEFAULT_DATABASE_URL: ${{ secrets.DEFAULT_DATABASE_URL }}
           DEFAULT_DATABASE_CONN_MAX_AGE: ${{ secrets.DEFAULT_DATABASE_CONN_MAX_AGE }}
+      - name: Debug URL access
+        run: |
+          echo "Testing URL access..."
+          curl -v https://apis.youbike.com.tw/json/station-yb1.json  # 替换为你要测试的 URL
+          # 检查连接是否正常
+          if [ $? -ne 0 ]; then
+            echo "Failed to connect to the URL!"
+            exit 1
+          else
+            echo "URL access successful."
+          fi
+
+          echo "Testing URL access..."
+          curl -v https://apis.youbike.com.tw/json/station-yb1.json  # 替换为你要测试的 URL
+          # 检查连接是否正常
+          if [ $? -ne 0 ]; then
+            echo "Failed to connect to the URL!"
+            exit 1
+          else
+            echo "URL access successful."
+          fi
 
       - name: Run crawler script
         run: |

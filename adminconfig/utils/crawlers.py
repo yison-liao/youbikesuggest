@@ -16,6 +16,7 @@ from youbike.models import YoubikeStationsInfo, YoubikeStationsStatus
 
 API_URL = "https://apis.youbike.com.tw/json/"
 SOURCE = ["area-all.json", "station-yb1.json", "station-yb2.json"]
+
 with open("adminconfig/utils/Stations.json", mode="r", encoding="utf8") as file:
     STATIONS = json.loads(file.read())
 
@@ -180,6 +181,7 @@ def station_status_crawler(url: str):
     if go.status_code == 200:
         print(f"connecting {url} start")
         data = json.loads(go.text)
+        station_uuid = None
         for station in data:
             time = datetime.strptime(station["time"], "%Y-%m-%d %H:%M:%S")
             time = pytz.timezone(settings.TIME_ZONE).localize(time)
@@ -187,17 +189,13 @@ def station_status_crawler(url: str):
             if station["station_no"] not in STATIONS.keys():
                 area = AreaInfo.objects.get(area_code=station["area_code"])
                 district = DistrictInfo.objects.get(district_tw=station["district_tw"])
-                create_station_info(station, area._id, district._id)
+                station_uuid = create_station_info(station, area._id, district._id)._id
                 get_list()
-                with open(
-                    "adminconfig/utils/Stations.json", mode="r", encoding="utf8"
-                ) as file:
-                    STATIONS = json.loads(file.read())
 
+        if station_uuid is None:
+            station_uuid = STATIONS[station["station_no"]]
         await_created = [
-            create_station_status_info(
-                station, STATIONS[station["station_no"]], bulk_create=True
-            )
+            create_station_status_info(station, station_uuid, bulk_create=True)
             for station in data
         ]
         with transaction.atomic():
