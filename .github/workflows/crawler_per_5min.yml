@@ -11,19 +11,13 @@ jobs:
   postgres-and-crawler:
     runs-on: ubuntu-latest
 
-    env:
-      POSTGRES_USER: ${{ secrets.DEFAULT_DATABASE_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.DEFAULT_DATABASE_PASSWORD }}
-      POSTGRES_DB: ${{ secrets.DEFAULT_DATABASE_NAME }}
-      DATABASE_URL: "postgres://${{ secrets.DEFAULT_DATABASE_USER }}:${{ secrets.DEFAULT_DATABASE_PASSWORD }}@localhost:5432/${{ secrets.DEFAULT_DATABASE_NAME }}"
-
     services:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_USER: ${{ env.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ env.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.DEFAULT_DATABASE_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DEFAULT_DATABASE_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DEFAULT_DATABASE_NAME }}
         ports:
           - 5432:5432
         options: >-
@@ -50,11 +44,11 @@ jobs:
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
           echo "DEBUG=${{ secrets.DEBUG }}" >> .env
-          echo "DATABASE_URL=${{ env.DATABASE_URL }}" >> .env
+          echo "DATABASE_URL=${{ secrets.DEFAULT_DATABASE_URL }}" >> .env
 
       - name: Wait for PostgreSQL
         run: |
-          until pg_isready -h localhost -p 5432 -U ${{ env.POSTGRES_USER }}; do
+          until pg_isready -h localhost -p 5432 -U ${{ secrets.DEFAULT_DATABASE_USER }}; do
             echo "Waiting for PostgreSQL to be ready..."
             sleep 3
           done
