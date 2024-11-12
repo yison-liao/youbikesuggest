@@ -73,8 +73,8 @@ jobs:
           python manage.py migrate
       - name: Test URL access
         run: |
-          curl -v https://example.comhttps://apis.youbike.com.tw/json/station-yb1.json
-          curl -v https://example.comhttps://apis.youbike.com.tw/json/station-yb2.json
+          curl -v https://apis.youbike.com.tw/json/station-yb1.json
+          curl -v https://apis.youbike.com.tw/json/station-yb2.json
 
       - name: Run crawler script
         run: |
