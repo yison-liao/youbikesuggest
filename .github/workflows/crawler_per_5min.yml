@@ -10,7 +10,7 @@ on:
 jobs:
   postgres-and-crawler:
     runs-on: ubuntu-latest
-
+    environment: youbikesuggest
     services:
       postgres:
         image: postgres:13
