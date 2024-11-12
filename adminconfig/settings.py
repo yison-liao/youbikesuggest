@@ -21,6 +21,7 @@ config = {
     **dotenv_values(f"{BASE_DIR}/adminconfig/.env"),
     **dotenv_values(f"{BASE_DIR}/adminconfig/.env.local"),
 }
+print(config)
 
 
 # Quick-start development settings - unsuitable for production
