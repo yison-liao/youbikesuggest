@@ -44,7 +44,7 @@ jobs:
         run: |
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
           echo "DEBUG=${{ secrets.DEBUG }}" >> .env
-          echo "DATABASE_URL=postgresql://youbike_user:L8C7i1RdoTUoFk0fL6JP1VPoRa9SG1AR@dpg-csmnnlggph6c73fn4ecg-a.singapore-postgres.render.com/youbike" >> .env
+          echo "DATABASE_URL=postgresql://youbike_user:L8C7i1RdoTUoFk0fL6JP1VPoRa9SG1AR@@127.0.0.1:5432/youbike" >> .env
 
       - name: Wait for PostgreSQL
         run: |
