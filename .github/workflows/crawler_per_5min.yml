@@ -57,7 +57,7 @@ jobs:
         with:
           tokenPrefix: "<"
           tokenSuffix: ">"
-          files: '["**/apiadmin/env_prod.json"]'
+          files: '["**/adminconfig/.env"]'
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           DEBUG: ${{ vars.DEBUG }}
