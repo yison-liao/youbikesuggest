@@ -18,6 +18,7 @@ from youbike.models import YoubikeStationsInfo, YoubikeStationsStatus
 API_URL = "https://apis.youbike.com.tw/json/"
 SOURCE = ["area-all.json", "station-yb1.json", "station-yb2.json"]
 
+
 with open("adminconfig/utils/Stations.json", mode="r", encoding="utf8") as file:
     STATIONS = json.loads(file.read())
 

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "taiwan_area_info",
     "youbike",
+    "weather",
 ]
 
 MIDDLEWARE = [
