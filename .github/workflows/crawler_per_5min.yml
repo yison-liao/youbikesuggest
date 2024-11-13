@@ -11,20 +11,6 @@ jobs:
   postgres-and-crawler:
     runs-on: ubuntu-latest
     environment: youbikesuggest
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_USER: youbike_user
-          POSTGRES_PASSWORD: L8C7i1RdoTUoFk0fL6JP1VPoRa9SG1AR
-          POSTGRES_DB: youbike
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U youbike_user"
-          --health-interval=5s
-          --health-timeout=2s
-          --health-retries=5
 
     steps:
       - name: Checkout repository
@@ -40,18 +26,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Inject prod env settings with database public host
-        run: |
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-          echo "DEBUG=${{ secrets.DEBUG }}" >> .env
-          echo "DATABASE_URL=postgresql://youbike_user:L8C7i1RdoTUoFk0fL6JP1VPoRa9SG1AR@127.0.0.1:5432/youbike" >> .env
-
-      - name: Wait for PostgreSQL
-        run: |
-          until pg_isready -h localhost -p 5432 -U youbike_user; do
-            echo "Waiting for PostgreSQL to be ready..."
-            sleep 3
-          done
       - name: Inject prod env settings with database public host
         uses: cschleiden/replace-tokens@v1
         with:
