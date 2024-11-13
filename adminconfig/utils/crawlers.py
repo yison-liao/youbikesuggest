@@ -172,7 +172,7 @@ def get_list():
     for sta in stations:
         data[sta.station_no] = str(sta._id)
     data = json.dumps(data)
-    with open("adminconfig/Stations.json", mode="w", encoding="utf8") as file:
+    with open("adminconfig/utils/Stations.json", mode="w", encoding="utf8") as file:
         file.write(data)
 
 
