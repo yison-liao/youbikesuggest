@@ -328,7 +328,7 @@ def precipitation_statics_crawler(url: str):  # TODO
     for i in range(10):
         if i != 0:
             pytime.sleep(1)
-        print(f"第{i+1}次連線 precipitation")
+        print(f"第{i+1}次連線 {url}")
         go = session.get(url)
         if go.status_code == 200:
             break
@@ -371,9 +371,6 @@ def get_obsStation_list():
 
 
 if __name__ == "__main__":
-    try:
-        for idx in range(1, 3):
-            station_status_crawler(API_URL + SOURCE[idx])
-        precipitation_statics_crawler(CENTRAL_WEATHER_ADMIN_API_URL)
-    except Exception:
-        pass
+    for idx in range(1, 3):
+        station_status_crawler(API_URL + SOURCE[idx])
+    precipitation_statics_crawler(CENTRAL_WEATHER_ADMIN_API_URL)
