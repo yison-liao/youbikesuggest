@@ -371,6 +371,9 @@ def get_obsStation_list():
 
 
 if __name__ == "__main__":
-    for idx in range(1, 3):
-        station_status_crawler(API_URL + SOURCE[idx])
-    precipitation_statics_crawler(CENTRAL_WEATHER_ADMIN_API_URL)
+    try:
+        for idx in range(1, 3):
+            station_status_crawler(API_URL + SOURCE[idx])
+        precipitation_statics_crawler(CENTRAL_WEATHER_ADMIN_API_URL)
+    except Exception:
+        pass
