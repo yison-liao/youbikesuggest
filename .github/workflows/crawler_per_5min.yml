@@ -49,7 +49,7 @@ jobs:
         run: |
           curl -v https://apis.youbike.com.tw/json/station-yb1.json
           curl -v https://apis.youbike.com.tw/json/station-yb2.json
-          curl -v https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0002-001?Authorization=${{ secrets.CENTRAL_WEATHER_ADMIN_API_TOKE }}&format=JSON"
+          curl -v https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0002-001?Authorization=${{ secrets.CENTRAL_WEATHER_ADMIN_API_TOKE }}&format=JSON
 
       - name: Run crawler script
         run: |
