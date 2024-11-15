@@ -202,11 +202,14 @@ def station_status_crawler(url: str):
         time = datetime.strptime(station["time"], "%Y-%m-%d %H:%M:%S")
         time = pytz.timezone(settings.TIME_ZONE).localize(time)
         station["time"] = time
-        if station["station_no"] not in STATIONS.keys():
-            area = AreaInfo.objects.get(area_code=station["area_code"])
-            district = DistrictInfo.objects.get(district_tw=station["district_tw"])
-            station_uuid = create_station_info(station, area._id, district._id)._id
-            get_list()
+        try:
+            if station["station_no"] not in STATIONS.keys():
+                area = AreaInfo.objects.get(area_code=station["area_code"])
+                district = DistrictInfo.objects.get(district_tw=station["district_tw"])
+                station_uuid = create_station_info(station, area._id, district._id)._id
+                get_list()
+        except Exception:
+            raise Exception(f"{station} error")
 
     if station_uuid is None:
         station_uuid = STATIONS[station["station_no"]]
