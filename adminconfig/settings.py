@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "taiwan_area_info",
     "youbike",
     "weather",
+    "authn",
 ]
 
 MIDDLEWARE = [

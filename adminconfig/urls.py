@@ -16,8 +16,9 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path, re_path
 
-urlpatterns = [
-    path("admin/", admin.site.urls),
-]
+from authn import urls as authn_urls
+
+url_route = [re_path(r"authn/", include(authn_urls.api_pattern))]
+urlpatterns = [path("admin/", admin.site.urls), re_path(r"^api/", include(url_route))]
