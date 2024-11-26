@@ -139,3 +139,10 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CENTRAL_WEATHER_ADMIN_API_TOKEN = config.get("CENTRAL_WEATHER_ADMIN_API_TOKEN")
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = config.get("EMAIL_PORT")
+EMAIL_USE_TLS = config.get("EMAIL_USE_TLS")
+EMAIL_HOST_USER = config.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config.get("EMAIL_HOST_PASSWORD")
