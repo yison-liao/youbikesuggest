@@ -1,6 +1,7 @@
 import json
 import traceback
 
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -19,15 +20,20 @@ class YoubikeStationsStatus(View):
         try:
             data = json.loads(request.body)
             station_uuid = data.get("station_uuid")
-            from_datatime = data.get("from_datatime", None)
+            from_datetime = data.get("from_datetime", None)
             to_datetime = data.get("to_datetime", None)
+            page_num = data.get("page_num", 1)
             query = {
                 "station_uuid": station_uuid,
-                "from_datatime__gte": from_datatime,
+                "from_datetime__gte": from_datetime,
                 "to_datetime__lte": to_datetime,
             }
             station_status_query_sets = status_models.objects.filter(**query)
+            paginator = Paginator(station_status_query_sets, 100)
+            page_requested = paginator.page(page_num)
             result = {
+                "page": page_num,
+                "total_page": paginator.num_pages,
                 f"{station_uuid}": [
                     {
                         "parking_spaces": q_set.parking_spaces,
@@ -36,8 +42,8 @@ class YoubikeStationsStatus(View):
                         "record_time": q_set.record_time,
                         "update_at": q_set.update_at,
                     }
-                    for q_set in station_status_query_sets
-                ]
+                    for q_set in page_requested
+                ],
             }
 
             return JsonResponse(
