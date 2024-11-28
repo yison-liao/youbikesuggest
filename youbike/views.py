@@ -32,6 +32,7 @@ class YoubikeStationsStatus(View):
                 del query["from_datetime__gte"]
                 del query["to_datetime__lte"]
             station_status_query_sets = status_models.objects.filter(**query)
+
             paginator = Paginator(station_status_query_sets, 100)
             page_requested = paginator.page(page_num)
             result = {
