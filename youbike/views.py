@@ -37,7 +37,8 @@ class YoubikeStationsStatus(View):
             page_requested = paginator.page(page_num)
             result = {
                 "page": page_num,
-                "total_page": paginator.num_pages,
+                "total_pages": paginator.num_pages,
+                "total_data": paginator.count,
                 f"{station_uuid}": [
                     {
                         "parking_spaces": q_set.parking_spaces,
