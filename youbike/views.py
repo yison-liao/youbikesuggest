@@ -16,7 +16,7 @@ from youbike.models import YoubikeStationsStatus as status_models
 # pagination
 @method_decorator(csrf_exempt, name="dispatch")
 class YoubikeStationsStatus(View):
-    def get(self, request, *args, **kargs):
+    def get(self, request, *args, **kwargs):
         try:
             data = json.loads(request.body)
             station_uuid = data.get("station_uuid")
@@ -28,6 +28,9 @@ class YoubikeStationsStatus(View):
                 "from_datetime__gte": from_datetime,
                 "to_datetime__lte": to_datetime,
             }
+            if query["from_datetime__gte"] is None:
+                del query["from_datetime__gte"]
+                del query["to_datetime__lte"]
             station_status_query_sets = status_models.objects.filter(**query)
             paginator = Paginator(station_status_query_sets, 100)
             page_requested = paginator.page(page_num)
