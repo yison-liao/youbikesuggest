@@ -20,6 +20,7 @@ class YoubikeStationsInfo(models.Model):
 
 class YoubikeStationsStatus(models.Model):
     status_option = ((1, "work"), (2, "not work"))
+
     _id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     station_uuid = models.UUIDField(blank=False)
     parking_spaces = models.BigIntegerField(blank=False, editable=True)
