@@ -9,13 +9,13 @@ class YoubikeStationsInfo(models.Model):
     _id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     area_uuid = models.UUIDField(blank=False)
     district_uuid = models.UUIDField(blank=False)
+    station_no = models.CharField(max_length=256, blank=False, editable=True)
     name_tw = models.CharField(max_length=256, blank=False, editable=True)
     name_en = models.CharField(max_length=256, blank=False, editable=True)
     address_tw = models.CharField(max_length=256, blank=False, editable=True)
     address_en = models.CharField(max_length=256, blank=False, editable=True)
     lat = models.FloatField(unique=False, blank=False, null=False)
     lng = models.FloatField(unique=False, blank=False, null=False)
-    station_no = models.CharField(max_length=256, blank=False, editable=True)
 
 
 class YoubikeStationsStatus(models.Model):
