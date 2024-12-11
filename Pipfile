@@ -17,6 +17,8 @@ dj-database-url = "*"
 django-multiselectfield = "*"
 requests = "*"
 psycopg2-binary = "*"
+celery = {extras = ["redis"], version = "*"}
+redis = "*"
 
 [dev-packages]
 
