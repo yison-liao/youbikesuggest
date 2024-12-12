@@ -19,10 +19,12 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 
 from authn import urls as authn_urls
+from weather import urls as weather_urls
 from youbike import urls as youbike_urls
 
 url_route = [
     re_path(r"authn/", include(authn_urls.api_pattern)),
     re_path(r"youbike/", include(youbike_urls.api_pattern)),
+    re_path(r"weather/", include(weather_urls.api_pattern)),
 ]
 urlpatterns = [path("admin/", admin.site.urls), re_path(r"^api/", include(url_route))]
