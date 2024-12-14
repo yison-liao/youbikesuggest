@@ -13,6 +13,8 @@ class AreaInfo(models.Model):
     area_name_en = models.CharField(max_length=256, unique=False, blank=True, null=True)
     area_code = models.CharField(max_length=10, unique=False, blank=True, null=True)
     area_code_2 = models.CharField(max_length=10, unique=False, blank=True, null=True)
+    station_start = models.CharField(max_length=10, unique=False, blank=True, null=True)
+    station_end = models.CharField(max_length=10, unique=False, blank=True, null=True)
     lat_from = models.FloatField(unique=False, blank=False, null=False)
     lat_to = models.FloatField(unique=False, blank=False, null=False)
     lng_from = models.FloatField(unique=False, blank=False, null=False)

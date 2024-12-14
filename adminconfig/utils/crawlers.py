@@ -1,6 +1,6 @@
-import LocalDriver
+import DjangoLocalDriver
 
-LocalDriver.LocalDriver()
+DjangoLocalDriver.LocalDriver()
 
 import json
 import time as pytime
@@ -26,6 +26,35 @@ with open("adminconfig/utils/Stations.json", mode="r", encoding="utf8") as file:
 
 with open("adminconfig/utils/ObsStations.json", mode="r", encoding="utf8") as file:
     OBS_STATIONS = json.loads(file.read())
+
+
+@transaction.atomic
+def create_tw_area_info(url: str):
+    session = requests.Session()
+    go = session.get(url)
+    if go.status_code == 200:
+        data = json.loads(go.text)
+
+    try:
+        for county in data:
+            # print(county)
+            query = {
+                "area_name_cn": county.get("area_name_tw"),
+                "area_name_en": county.get("area_name_en"),
+                "area_code": county.get("area_code"),
+                "area_code_2": county.get("area_code_2"),
+                "station_start": county.get("station_start"),
+                "station_end": county.get("station_end"),
+                "lat_from": county.get("lat"),
+                "lat_to": county.get("lat2"),
+                "lng_from": county.get("lng"),
+                "lng_to": county.get("lng2"),
+            }
+            area = AreaInfo.objects.create(**query)
+            print(f"{area.area_name_cn} create successfully")
+    except Exception as e:
+        transaction.set_rollback(True)
+        raise Exception(e)
 
 
 @transaction.atomic
@@ -70,7 +99,7 @@ def create_area_info(url: str):
 
 
 @transaction.atomic
-def station_info_crawler(url: str):
+def create_district_and_station_info(url: str):
     session = requests.Session()
     go = session.get(url)
     if go.status_code == 200:
@@ -116,6 +145,7 @@ def create_district_info(station: dict, area_uuid: uuid.UUID):
             district_tw=station["district_tw"],
             district_en=station["district_en"],
         )
+
         return new_district
 
     except Exception:
@@ -375,5 +405,7 @@ def get_obsStation_list():
 
 if __name__ == "__main__":
     for idx in range(1, 3):
-        station_status_crawler(API_URL + SOURCE[idx])
-    precipitation_statics_crawler(CENTRAL_WEATHER_ADMIN_API_URL)
+        #     station_status_crawler(API_URL + SOURCE[idx])
+        create_district_and_station_info(API_URL + SOURCE[idx])
+    # precipitation_statics_crawler(CENTRAL_WEATHER_ADMIN_API_URL)
+    # create_tw_area_info(API_URL + SOURCE[0])

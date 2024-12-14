@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
-import dj_database_url
 from dotenv import dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -89,11 +88,14 @@ conn_max_age = (
     else config.get("DEFAULT_DATABASE_CONN_MAX_AGE")
 )
 DATABASES = {
-    "default": dj_database_url.config(
-        default=config.get("DEFAULT_DATABASE_URL"),
-        conn_max_age=60,
-        engine="django.db.backends.postgresql",
-    )
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": config.get("DEFAULT_DATABASE_NAME"),
+        "USER": config.get("DEFAULT_DATABASE_USER"),
+        "PASSWORD": config.get("DEFAULT_DATABASE_PASSWORD"),
+        "HOST": config.get("DEFAULT_DATABASE_HOST"),
+        "PORT": config.get("DEFAULT_DATABASE_PORT"),
+    }
 }
 
 
