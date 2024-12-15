@@ -95,6 +95,7 @@ DATABASES = {
         "PASSWORD": config.get("DEFAULT_DATABASE_PASSWORD"),
         "HOST": config.get("DEFAULT_DATABASE_HOST"),
         "PORT": config.get("DEFAULT_DATABASE_PORT"),
+        "CONN_MAX_AGE": 600,
     }
 }
 
