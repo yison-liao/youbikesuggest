@@ -41,9 +41,9 @@ jobs:
           DEFAULT_DATABASE_PORT: ${{ secrets.DEFAULT_DATABASE_PORT }}
           DEFAULT_DATABASE_USER: ${{ secrets.DEFAULT_DATABASE_USER }}
           CENTRAL_WEATHER_ADMIN_API_TOKEN: ${{ secrets.CENTRAL_WEATHER_ADMIN_API_TOKE }}
-      - name: Run database migrations
-        run: |
-          python manage.py migrate
+      # - name: Run database migrations
+      #   run: |
+      #     python manage.py migrate
       - name: Test URL access
         run: |
           curl -v https://apis.youbike.com.tw/json/station-yb1.json
