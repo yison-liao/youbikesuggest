@@ -43,6 +43,9 @@ jobs:
           CENTRAL_WEATHER_ADMIN_API_TOKEN: ${{ secrets.CENTRAL_WEATHER_ADMIN_API_TOKE }}
       - name: Run database migrations
         run: |
+          apt update 
+          apt install -y netcat 
+          nc -zv 52.198.225.16 5432 
           python manage.py migrate
       - name: Test URL access
         run: |
